@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from devchat.security import _build_subject_alt_name, create_client_ssl_context, create_server_ssl_context, generate_self_signed_cert
+from devchat.security import _build_subject_alt_name, certificate_covers_host, create_client_ssl_context, create_server_ssl_context, generate_self_signed_cert
 from devchat.server import ChatServer
 from devchat.storage import LocalHistoryStore, ServerStore
 
@@ -115,3 +115,14 @@ class SecurityHelpersTest(unittest.TestCase):
         san = _build_subject_alt_name("127.0.0.1")
         self.assertIn("IP:127.0.0.1", san)
         self.assertIn("DNS:localhost", san)
+
+    def test_certificate_covers_host(self) -> None:
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as td:
+            cert = Path(td) / "c.crt"
+            key = Path(td) / "k.key"
+            generate_self_signed_cert(cert, key, "127.0.0.1", 1)
+            self.assertTrue(certificate_covers_host(cert, "127.0.0.1"))
+            self.assertTrue(certificate_covers_host(cert, "localhost"))

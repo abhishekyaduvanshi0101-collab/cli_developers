@@ -56,6 +56,7 @@ If you see certificate IP/hostname mismatch:
 devchat init --username alice --host 127.0.0.1 --port 8765
 ```
 
+`devchat init` now auto-regenerates certs if existing cert SAN does not match the host.
 Then run server/client again with the same host.
 
 ## npm package direction

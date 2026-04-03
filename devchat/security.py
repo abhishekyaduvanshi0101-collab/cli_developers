@@ -83,3 +83,20 @@ def _build_subject_alt_name(common_name: str) -> str:
         if entry not in deduped:
             deduped.append(entry)
     return ",".join(deduped)
+
+
+def certificate_covers_host(certfile: Path, host: str) -> bool:
+    try:
+        cert_info = ssl._ssl._test_decode_cert(str(certfile))  # type: ignore[attr-defined]
+    except Exception:
+        return False
+
+    alt_names = cert_info.get("subjectAltName", [])
+    dns_names = {value for kind, value in alt_names if kind == "DNS"}
+    ip_names = {value for kind, value in alt_names if kind == "IP Address"}
+
+    try:
+        ipaddress.ip_address(host)
+        return host in ip_names
+    except ValueError:
+        return host in dns_names

@@ -6,7 +6,7 @@ from pathlib import Path
 
 from devchat.client import launch_default_session, run_client
 from devchat.config import ClientConfig
-from devchat.security import generate_self_signed_cert
+from devchat.security import certificate_covers_host, generate_self_signed_cert
 from devchat.server import run_server
 from devchat.validation import is_valid_username, username_rules
 
@@ -110,7 +110,8 @@ def _run_init(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None
     certfile = args.certfile or (Path.home() / ".devchat" / "certs" / "server.crt")
     keyfile = args.keyfile or (Path.home() / ".devchat" / "certs" / "server.key")
 
-    if not certfile.exists() or not keyfile.exists():
+    must_regenerate = (not certfile.exists()) or (not keyfile.exists()) or (not certificate_covers_host(certfile, args.host))
+    if must_regenerate:
         generate_self_signed_cert(certfile, keyfile, args.host, args.days)
         print(f"Generated TLS cert/key at {certfile} and {keyfile}")
 
