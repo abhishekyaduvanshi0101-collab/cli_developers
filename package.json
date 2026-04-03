@@ -1,0 +1,15 @@
+{
+  "name": "devchat-cli",
+  "version": "0.1.0",
+  "description": "Secure terminal chat for developers (Python-powered CLI wrapper)",
+  "bin": {
+    "devchat": "bin/devchat.js"
+  },
+  "files": [
+    "bin",
+    "devchat",
+    "README.md",
+    "pyproject.toml"
+  ],
+  "license": "MIT"
+}
