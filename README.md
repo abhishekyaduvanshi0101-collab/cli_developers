@@ -40,6 +40,24 @@ This lets users run only `devchat` next time without retyping setup.
    devchat
    ```
 
+
+### Why does `devchat` ask for password?
+
+DevChat uses authenticated accounts.
+- First successful login with a new username registers that username with your password.
+- Next logins for that username require the same password.
+
+### TLS mismatch fix (`CERTIFICATE_VERIFY_FAILED` for 127.0.0.1)
+
+If you see certificate IP/hostname mismatch:
+
+```bash
+# regenerate cert/profile with host you actually use
+devchat init --username alice --host 127.0.0.1 --port 8765
+```
+
+Then run server/client again with the same host.
+
 ## npm package direction
 
 This repo now includes an npm wrapper so users can run `devchat` after `npm i -g devchat-cli`.
