@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "devchat-cli"
+version = "0.1.0"
+description = "Terminal-first realtime chat for developer teams"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+authors = [
+  { name = "DevChat Contributors" }
+]
+
+[project.scripts]
+devchat = "devchat.cli:main"
+
+[tool.setuptools]
+packages = ["devchat"]
