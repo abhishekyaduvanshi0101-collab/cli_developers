@@ -59,6 +59,27 @@ devchat init --username alice --host 127.0.0.1 --port 8765
 `devchat init` now auto-regenerates certs if existing cert SAN does not match the host.
 Then run server/client again with the same host.
 
+
+## Verify message delivery in GitHub Codespaces
+
+Open **3 terminals** in the same Codespace:
+
+1. **Terminal A** (server)
+   ```bash
+   devchat serve --host 0.0.0.0 --port 8765 --certfile ~/.devchat/certs/server.crt --keyfile ~/.devchat/certs/server.key
+   ```
+2. **Terminal B** (alice)
+   ```bash
+   devchat chat --username alice --server tls://127.0.0.1:8765 --ca-cert ~/.devchat/certs/server.crt
+   ```
+3. **Terminal C** (bob)
+   ```bash
+   devchat chat --username bob --server tls://127.0.0.1:8765 --ca-cert ~/.devchat/certs/server.crt
+   ```
+
+In Alice terminal, type `bob` at main page to open DM, send `hi`.
+You should immediately see Bob receive `[dm] alice -> bob: hi` in Bob terminal.
+
 ## npm package direction
 
 This repo now includes an npm wrapper so users can run `devchat` after `npm i -g devchat-cli`.

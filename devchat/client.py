@@ -156,6 +156,9 @@ async def _send_loop(
             if not is_valid_username(target):
                 print("Invalid username. " + username_rules())
                 continue
+            if target == current_username:
+                print("You are already logged in as this user. Open another terminal with a different username to test DM delivery.")
+                continue
             state["mode"] = "dm"
             state["target"] = target
             _show_dm_history(history, current_username, target)
